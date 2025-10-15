@@ -4,7 +4,7 @@
 # ================================
 spring:
   application:
-    name: USER-SERVICE                 # Config Server에서 식별할 앱 이름
+    name: user              # Config Server에서 식별할 앱 이름
   config:
     activate:
       on-profile: prod                 # 이 파일은 prod 프로필에서만 활성화
