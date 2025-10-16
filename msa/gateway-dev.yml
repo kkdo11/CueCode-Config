@@ -4,7 +4,7 @@
 # =========================================
 spring:
   application:
-    name: API-GATEWAY            # Config/로그 식별용 서비스명
+    name: api-gateway       # Config/로그 식별용 서비스명
   config:
     activate:
       on-profile: dev            # 이 파일은 dev 프로필에서만 활성화
