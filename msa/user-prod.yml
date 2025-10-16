@@ -21,6 +21,12 @@ spring:
       uuid-representation: standard
       # ※ 복제셋/옵션이 많다면 uri 사용을 고려:
       # spring.data.mongodb.uri: ${MONGODB_URI}
+      redis:
+        # kubectl get svc 로 확인한 user-redisdb 서비스 이름
+        host: ${REDIS_HOST}
+        port: 6379
+        # Secret을 통해 주입될 비밀번호 변수
+        password: ${REDIS_PASSWORD}
 
 server:
   port: 11000                          # 유저 서비스 HTTP 포트
