@@ -10,23 +10,31 @@ spring:
       on-profile: prod                 # 이 파일은 prod 프로필에서만 활성화
   data:
     mongodb:
-      # ▶ 운영: 하드코딩 금지. 환경변수/시크릿로 주입!
-      #  - K8s라면 Service FQDN 사용 권장 (예: mongo-svc.default.svc.cluster.local)
       host: ${MONGO_HOST}
       port: ${MONGO_PORT}
       database: ${MONGO_DB}
-      username: ${MONGO_USER}          # 시크릿/환경변수로만 주입
-      password: ${MONGO_PASSWORD}      # 시크릿/환경변수로만 주입
-      auto-index-creation: true        # 필요한 컬렉션에 한해 사용. 대규모 트래픽 시 주의
+      username: ${MONGO_USER}
+      password: ${MONGO_PASSWORD}
+      auto-index-creation: true
       uuid-representation: standard
-      # ※ 복제셋/옵션이 많다면 uri 사용을 고려:
-      # spring.data.mongodb.uri: ${MONGODB_URI}
-      redis:
-        # kubectl get svc 로 확인한 user-redisdb 서비스 이름
-        host: ${REDIS_HOST}
-        port: 6379
-        # Secret을 통해 주입될 비밀번호 변수
-        password: ${REDIS_PASSWORD}
+    # --- [수정됨] redis가 mongodb와 같은 레벨이 되도록 들여쓰기 수정 ---
+    redis:
+      host: ${REDIS_HOST}
+      port: 6379
+      password: ${REDIS_PASSWORD}
+
+  # --- [수정됨] mail이 data와 같은 레벨이 되도록 들여쓰기 수정 ---
+  mail:
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
 server:
   port: 11000                          # 유저 서비스 HTTP 포트
