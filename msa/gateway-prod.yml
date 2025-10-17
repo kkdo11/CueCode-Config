@@ -61,6 +61,7 @@ spring:
 management:
   server:
     port: 13001
+    address: 0.0.0.0
   endpoints:
     web:
       exposure:
