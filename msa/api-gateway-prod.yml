@@ -15,61 +15,63 @@ spring:
       on-profile: prod
   cloud:
     gateway:
-      # ===============================================
-      # ▼▼▼▼▼▼▼▼▼▼ 라우팅 및 CORS 설정 수정 ▼▼▼▼▼▼▼▼▼▼
-      # ===============================================
-      routes:
-        # 1. Motion-Service 라우팅
-        - id: motion_service_route
-          uri: lb://motion-service
-          predicates:
-            - Path=/motions/**
+      server:
+        webflux:
+          # ===============================================
+          # ▼▼▼▼▼▼▼▼▼▼ 라우팅 및 CORS 설정 수정 ▼▼▼▼▼▼▼▼▼▼
+          # ===============================================
+          routes:
+            # 1. Motion-Service 라우팅
+            - id: motion_service_route
+              uri: lb://motion-service
+              predicates:
+                - Path=/motions/**
 
-        # 2. User-Service 라우팅 (API 경로별로 세분화)
-        - id: user_login_route
-          uri: lb://user-service
-          predicates:
-            - Path=/login/**
-        - id: user_users_route
-          uri: lb://user-service
-          predicates:
-            - Path=/users/**
-        - id: user_manager_route
-          uri: lb://user-service
-          predicates:
-            - Path=/manager/**
-        - id: user_patient_route
-          uri: lb://user-service
-          predicates:
-            - Path=/patient/**
-        - id: user_user_info_route
-          uri: lb://user-service
-          predicates:
-            - Path=/user/**
-        - id: user_reg_route
-          uri: lb://user-service
-          predicates:
-            - Path=/reg/**
+            # 2. User-Service 라우팅 (API 경로별로 세분화)
+            - id: user_login_route
+              uri: lb://user-service
+              predicates:
+                - Path=/login/**
+            - id: user_users_route
+              uri: lb://user-service
+              predicates:
+                - Path=/users/**
+            - id: user_manager_route
+              uri: lb://user-service
+              predicates:
+                - Path=/manager/**
+            - id: user_patient_route
+              uri: lb://user-service
+              predicates:
+                - Path=/patient/**
+            - id: user_user_info_route
+              uri: lb://user-service
+              predicates:
+                - Path=/user/**
+            - id: user_reg_route
+              uri: lb://user-service
+              predicates:
+                - Path=/reg/**
 
-        # 3. Front-UI 라우팅 규칙 (가장 마지막에 위치해야 함)
-        - id: front_ui_route
-          uri: lb://front-ui-service # ★ front-ui를 노출하는 서비스 이름
-          predicates:
-            - Path=/**
+            # 3. Front-UI 라우팅 규칙 (가장 마지막에 위치해야 함)
+            - id: front_ui_route
+              uri: lb://front-ui-service # ★ front-ui를 노출하는 서비스 이름
+              predicates:
+                - Path=/**
 
-      # [수정] Spring Cloud Gateway의 공식적인 CORS 설정 방식
-      globalcors:
-        cors-configurations:
-          '[/**]': # 모든 경로(/**)에 대해 아래 CORS 정책 적용
-            allowed-origins: "${CORS_ALLOWED_ORIGINS:http://localhost:14000}" # Secret이나 환경변수로 주입 권장
-            allowed-methods:
-              - GET
-              - POST
-              - PUT
-              - DELETE
-              - OPTIONS
-            allowed-headers: "*"
-            allow-credentials: true
+          # [수정] Spring Cloud Gateway의 공식적인 CORS 설정 방식
+          globalcors:
+            cors-configurations:
+              '[/**]': # 모든 경로(/**)에 대해 아래 CORS 정책 적용
+                allowed-origins: "${CORS_ALLOWED_ORIGINS:http://localhost:14000}" # Secret이나 환경변수로 주입 권장
+                allowed-methods:
+                  - GET
+                  - POST
+                  - PUT
+                  - DELETE
+                  - OPTIONS
+                allowed-headers: "*"
+                allow-credentials: true
 
 # ... management, logging, jwt 등 나머지 설정은 이전과 동일 ...
 management:
