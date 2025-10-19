@@ -91,3 +91,10 @@ logging:
 jwt:
   secret:
     key: ${JWT_SECRET_KEY}
+
+# Service URIs for Kubernetes environment
+service:
+  uri:
+    user: http://user-service:11000
+    front: http://front-ui-service:14000
+    motion: http://motion-service:15000
