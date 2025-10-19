@@ -22,8 +22,7 @@ spring:
         # ─────────────────────────────────────────────────────────
         - id: user
 
-          uri: http://localhost:11000
-#          uri: http://user-svc.default.svc.cluster.local:11000
+          uri: http://user-service.default.svc.cluster.local:11000
           predicates:
             - Path=/user/**
           filters:
