@@ -20,7 +20,7 @@ spring:
     port: 465
     username: ruby129@naver.com
     password: ${MAIL_PASSWORD}
-    protocol: smtps
+    protocol: smtp
     default-encoding: UTF-8
     properties:
       mail:
