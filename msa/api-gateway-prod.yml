@@ -19,7 +19,7 @@ spring:
           globalcors:
             cors-configurations:
               '[/**]': # 모든 경로(/**)에 대해 아래 CORS 정책 적용
-                allowed-origins: "${CORS_ALLOWED_ORIGINS:http://localhost:14000,http://cuecode.kr,https://cuecode.kr}" # Secret이나 환경변수로 주입 권장
+                allowed-origins: "${CORS_ALLOWED_ORIGINS:http://localhost:14000,http://cuecode.kr,https://cuecode.kr,https://api.cuecode.kr}" # Secret이나 환경변수로 주입 권장
                 allowed-methods:
                   - GET
                   - POST
@@ -79,8 +79,6 @@ management:
   endpoint:
     health:
       show-details: when_authorized
-    shutdown:
-      enabled: false
 
 logging:
   level:
