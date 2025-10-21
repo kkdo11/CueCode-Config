@@ -72,6 +72,13 @@ spring:
               filters:
                 - StripPrefix=1
 
+            - id: user-contact
+              uri: ${service.uri.user}
+              predicates:
+                - Path=/api/users/contact
+              filters:
+                - StripPrefix=1 # '/api' 접두사 제거
+
 # Actuator 설정 (최신 방식)
 management:
   server:
