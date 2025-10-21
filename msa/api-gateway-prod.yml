@@ -33,39 +33,47 @@ spring:
             - id: motion_service_route
               uri: http://motion-service:15000
               predicates:
-                - Path=/motions/**
+                - Path=/api/motions/**
+              filters:
+                - StripPrefix=1
 
             # 2. User-Service 라우팅 (API 경로별로 세분화)
             - id: user_login_route
               uri: http://user-service:11000
               predicates:
-                - Path=/login/**
+                - Path=/api/login/**
+              filters:
+                - StripPrefix=1
             - id: user_users_route
               uri: http://user-service:11000
               predicates:
-                - Path=/users/**
+                - Path=/api/users/**
+              filters:
+                - StripPrefix=1
             - id: user_manager_route
               uri: http://user-service:11000
               predicates:
-                - Path=/manager/**
+                - Path=/api/manager/**
+              filters:
+                - StripPrefix=1
             - id: user_patient_route
               uri: http://user-service:11000
               predicates:
-                - Path=/patient/**
+                - Path=/api/patient/**
+              filters:
+                - StripPrefix=1
             - id: user_user_info_route
               uri: http://user-service:11000
               predicates:
-                - Path=/user/**
+                - Path=/api/user/**
+              filters:
+                - StripPrefix=1
             - id: user_reg_route
               uri: http://user-service:11000
               predicates:
-                - Path=/reg/**
-
-            # 3. Front-UI 라우팅 규칙 (가장 마지막에 위치해야 함)
-            - id: front_ui_route
-              uri: http://front-ui-service:14000
-              predicates:
-                - Path=/**
+                - Path=/api/reg/**
+              filters:
+                - StripPrefix=1
 
 # Actuator 설정 (최신 방식)
 management:
@@ -75,10 +83,12 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,info,prometheus
+        include: health
   endpoint:
     health:
       show-details: when_authorized
+      probes:
+        enabled: true
 
 logging:
   level:

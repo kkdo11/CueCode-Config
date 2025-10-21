@@ -26,10 +26,49 @@ spring:
                 allowed-headers: "*"
                 allow-credentials: true
           routes:
-            - id: user
+            # 1. Motion-Service 라우팅
+            - id: motion_service_route
+              uri: ${service.uri.motion}
+              predicates:
+                - Path=/api/motions/**
+              filters:
+                - StripPrefix=1
+
+            # 2. User-Service 라우팅 (API 경로별로 세분화)
+            - id: user_login_route
               uri: ${service.uri.user}
               predicates:
-                - Path=/user/**
+                - Path=/api/login/**
+              filters:
+                - StripPrefix=1
+            - id: user_users_route
+              uri: ${service.uri.user}
+              predicates:
+                - Path=/api/users/**
+              filters:
+                - StripPrefix=1
+            - id: user_manager_route
+              uri: ${service.uri.user}
+              predicates:
+                - Path=/api/manager/**
+              filters:
+                - StripPrefix=1
+            - id: user_patient_route
+              uri: ${service.uri.user}
+              predicates:
+                - Path=/api/patient/**
+              filters:
+                - StripPrefix=1
+            - id: user_user_info_route
+              uri: ${service.uri.user}
+              predicates:
+                - Path=/api/user/**
+              filters:
+                - StripPrefix=1
+            - id: user_reg_route
+              uri: ${service.uri.user}
+              predicates:
+                - Path=/api/reg/**
               filters:
                 - StripPrefix=1
 
