@@ -34,6 +34,11 @@ spring:
               filters:
                 - StripPrefix=1
 
+            - id: motion_service_websocket_route
+              uri: ws://localhost:15000
+              predicates:
+                - Path=/ws/motion
+
             # 2. User-Service 라우팅 (API 경로별로 세분화)
             - id: user_login_route
               uri: ${service.uri.user}
