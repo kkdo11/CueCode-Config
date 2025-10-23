@@ -3,8 +3,6 @@
 # 목적: 운영/실서비스용. 최소 노출·보안 강화·환경변수/시크릿 기반 주입.
 # ================================
 spring:
-  profiles:
-    include: json
   application:
     name: user-service            # Config Server에서 식별할 앱 이름
   config:

@@ -6,9 +6,7 @@ server:
   port: 13000                    # 게이트웨이 HTTP 포트
   shutdown: graceful             # 무중단 배포/롤링 업데이트 시 안전
 
-spring:
-  profiles:
-    include: json
+
   application:
     name: api-gateway       # Config/로그 식별용 서비스명
   config:
