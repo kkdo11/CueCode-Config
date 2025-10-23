@@ -82,6 +82,13 @@ server:
               filters:
                 - StripPrefix=1
 
+            - id: user_find_id_route
+              uri: http://user-service:11000
+              predicates:
+                - Path=/api/reg/findIdByEmail
+              filters:
+                - StripPrefix=1 # /api를 제거하여 /reg/findIdByEmail로 전달
+
             # 3. Front-UI Service 라우팅 (정적 파일 및 HTML 페이지)
             - id: front_ui_route
               uri: http://front-ui-service:14000

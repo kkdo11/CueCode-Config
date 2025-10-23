@@ -30,6 +30,7 @@ spring:
             - id: motion_service_route
               uri: ${service.uri.motion}
               predicates:
+                - Path=/api/motions
                 - Path=/api/motions/**
               filters:
                 - StripPrefix=1
@@ -43,36 +44,42 @@ spring:
             - id: user_login_route
               uri: ${service.uri.user}
               predicates:
+                - Path=/api/login
                 - Path=/api/login/**
               filters:
                 - StripPrefix=1
             - id: user_users_route
               uri: ${service.uri.user}
               predicates:
+                - Path=/api/users
                 - Path=/api/users/**
               filters:
                 - StripPrefix=1
             - id: user_manager_route
               uri: ${service.uri.user}
               predicates:
+                - Path=/api/manager
                 - Path=/api/manager/**
               filters:
                 - StripPrefix=1
             - id: user_patient_route
               uri: ${service.uri.user}
               predicates:
+                - Path=/api/patient
                 - Path=/api/patient/**
               filters:
                 - StripPrefix=1
             - id: user_user_info_route
               uri: ${service.uri.user}
               predicates:
+                - Path=/api/user
                 - Path=/api/user/**
               filters:
                 - StripPrefix=1
             - id: user_reg_route
               uri: ${service.uri.user}
               predicates:
+                - Path=/api/reg
                 - Path=/api/reg/**
               filters:
                 - StripPrefix=1
@@ -81,6 +88,7 @@ spring:
               uri: ${service.uri.user}
               predicates:
                 - Path=/api/users/contact
+                - Path=/api/users/contact/** # Add this for consistency, though contact is usually a single endpoint
               filters:
                 - StripPrefix=1 # '/api' 접두사 제거
 
