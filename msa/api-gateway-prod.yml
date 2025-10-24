@@ -33,7 +33,6 @@ server:
             - id: motion_service_route
               uri: http://motion-service:15000
               predicates:
-                - Path=/api/motions
                 - Path=/api/motions/**
               filters:
                 - StripPrefix=1
