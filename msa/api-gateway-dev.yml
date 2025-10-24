@@ -30,7 +30,6 @@ spring:
             - id: motion_service_route
               uri: ${service.uri.motion}
               predicates:
-                - Path=/api/motions
                 - Path=/api/motions/**
               filters:
                 - StripPrefix=1
