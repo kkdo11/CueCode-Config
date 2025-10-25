@@ -1,21 +1,24 @@
 # =========================================
-# API-GATEWAY (dev) - Spring Cloud Config
-# 목적: 개발/로컬 테스트용. 로그·Actuator 전면 개방, CORS 완화, 긴 토큰 만료시간.
+# API-GATEWAY (dev) - 최종 수정본
 # =========================================
 server:
-  port: 13000                    # 게이트웨이 HTTP 포트
-  shutdown: graceful             # 요청 처리 후 정상 종료 (개발 편의)
+  port: 13000
+  shutdown: graceful
 
 spring:
   application:
-    name: api-gateway       # Config/로그 식별용 서비스명
+    name: api-gateway
   config:
     activate:
-      on-profile: dev            # 이 파일은 dev 프로필에서만 활성화
+      on-profile: dev
   cloud:
     discovery:
-      enabled: false             # Eureka 등 DiscoveryClient 비활성화
+      enabled: false
     gateway:
+      # --- 모든 요청에 공통으로 시크릿 헤더를 추가 ---
+      default-filters:
+        - AddRequestHeader=X-Gateway-Secret, cue-code-secret-key-for-internal-communication
+
       server:
         webflux:
           globalcors:
@@ -32,20 +35,23 @@ spring:
               predicates:
                 - Path=/api/motions/**
               filters:
-                - StripPrefix=1
+                - StripPrefix=1 # 개별 적용
 
             - id: motion_service_websocket_route
               uri: ws://localhost:15000
               predicates:
                 - Path=/ws/motion
+              # WebSocket은 경로 변경이 필요 없으므로 필터 없음
 
-            # 2. User-Service 라우팅 (API 경로별로 세분화)
+            # 2. User-Service 라우팅
             - id: user_login_route
               uri: ${service.uri.user}
               predicates:
                 - Path=/api/login/**
               filters:
-                - StripPrefix=1
+                - StripPrefix=1 # 개별 적용
+
+            # --- (이하 다른 user-service 라우팅 규칙들도 동일하게 유지) ---
             - id: user_users_route
               uri: ${service.uri.user}
               predicates:
@@ -76,50 +82,47 @@ spring:
                 - Path=/api/reg/**
               filters:
                 - StripPrefix=1
-
             - id: user-contact
               uri: ${service.uri.user}
               predicates:
-                - Path=/api/users/contact/** # Add this for consistency, though contact is usually a single endpoint
+                - Path=/api/users/contact/**
               filters:
-                - StripPrefix=1 # '/api' 접두사 제거
+                - StripPrefix=1
 
-# Actuator 설정 (최신 방식)
+# (management, logging, jwt, service 설정은 변경 없음)
 management:
   server:
-    address: localhost           # Actuator를 로컬에서만 노출 (개발)
-    port: 13001                  # Actuator 포트(서버와 분리)
+    address: localhost
+    port: 13001
   endpoints:
     web:
       exposure:
-        include: "*"             # 개발은 전부 노출(beans, env 등) — 운영에선 금지!
+        include: "*"
   endpoint:
     health:
-      show-details: always       # 상세 헬스 정보 표시 (개발 디버깅용)
+      show-details: always
 
 logging:
   level:
     root: INFO
     org.springframework.cloud.gateway: TRACE
-    org.springframework.security: TRACE # Security 상세 로그 활성화
-    reactor.netty.http.client: TRACE # Netty 클라이언트 상세 로그 활성화
+    org.springframework.security: TRACE
+    reactor.netty.http.client: TRACE
 
-# JWT (개발용) — 게이트웨이와 토큰 발급/검증 서비스가 '동일한 키'를 사용해야 함
 jwt:
   token:
-    creator: cuecoder            # iss 등 메타로 활용 가능
+    creator: cuecoder
     access:
       valid:
-        time: "600"              # Access Token 유효시간(초) — 10분
+        time: "600"
       name: jwtAccessToken
     refresh:
       valid:
-        time: "7200"             # Refresh Token 유효시간(초) — 2시간
+        time: "7200"
       name: jwtRefreshToken
   secret:
     key: "Ixp3HCXOS5Hi0py81JF610NG5nvySPjBq3VQXPmwsLI="
 
-# Service URIs for local development
 service:
   uri:
     user: http://localhost:11000
