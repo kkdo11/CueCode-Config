@@ -14,14 +14,8 @@ spring:
       on-profile: dev            # 이 파일은 dev 프로필에서만 활성화
   cloud:
     discovery:
-      enabled: false
+      enabled: false             # Eureka 등 DiscoveryClient 비활성화
     gateway:
-      # --- 모든 라우팅에 적용될 기본 필터 ---
-      default-filters:
-        - AddRequestHeader=X-Gateway-Secret, cue-code-secret-key-for-internal-communication
-        - StripPrefix=1
-
-      # --- 💡[수정] 최신 버전에 맞게 구조 변경 ---
       server:
         webflux:
           globalcors:
@@ -31,13 +25,14 @@ spring:
                 allowed-methods: [GET, POST, PUT, DELETE, OPTIONS]
                 allowed-headers: "*"
                 allow-credentials: true
-          # --- 'routes' 설정을 이 위치로 이동 ---
           routes:
             # 1. Motion-Service 라우팅
             - id: motion_service_route
               uri: ${service.uri.motion}
               predicates:
                 - Path=/api/motions/**
+              filters:
+                - StripPrefix=1
 
             - id: motion_service_websocket_route
               uri: ws://localhost:15000
@@ -49,30 +44,45 @@ spring:
               uri: ${service.uri.user}
               predicates:
                 - Path=/api/login/**
+              filters:
+                - StripPrefix=1
             - id: user_users_route
               uri: ${service.uri.user}
               predicates:
                 - Path=/api/users/**
+              filters:
+                - StripPrefix=1
             - id: user_manager_route
               uri: ${service.uri.user}
               predicates:
                 - Path=/api/manager/**
+              filters:
+                - StripPrefix=1
             - id: user_patient_route
               uri: ${service.uri.user}
               predicates:
                 - Path=/api/patient/**
+              filters:
+                - StripPrefix=1
             - id: user_user_info_route
               uri: ${service.uri.user}
               predicates:
                 - Path=/api/user/**
+              filters:
+                - StripPrefix=1
             - id: user_reg_route
               uri: ${service.uri.user}
               predicates:
                 - Path=/api/reg/**
+              filters:
+                - StripPrefix=1
+
             - id: user-contact
               uri: ${service.uri.user}
               predicates:
-                - Path=/api/users/contact/**
+                - Path=/api/users/contact/** # Add this for consistency, though contact is usually a single endpoint
+              filters:
+                - StripPrefix=1 # '/api' 접두사 제거
 
 # Actuator 설정 (최신 방식)
 management:
