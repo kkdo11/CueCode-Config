@@ -45,6 +45,7 @@ logging:
   level:
     root: INFO
     org.springframework.data.mongodb: INFO
+    org.springframework.security: TRACE # Spring Security 상세 로그 활성화
 
 # JWT (개발) — 게이트웨이/다른 서비스와 '동일한 HS256 키'를 사용해야 검증 가능
 jwt:
