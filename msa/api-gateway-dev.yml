@@ -37,6 +37,12 @@ spring:
               filters:
                 - StripPrefix=1 # 개별 적용
 
+            - id: motion_service_websocket_routeEX
+              uri: ws://localhost:15000
+              predicates:
+                - Path=/ws/motion/**
+
+
             - id: motion_service_websocket_route
               uri: ws://localhost:15000
               predicates:
