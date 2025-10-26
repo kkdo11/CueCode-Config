@@ -40,7 +40,9 @@ spring:
             - id: motion_service_websocket_route
               uri: ws://localhost:15000
               predicates:
-                - Path=/ws/motion/**
+                - Path=api/ws/motion/**
+              filters:
+                - StripPrefix=1 # 개별 적용
               # WebSocket은 경로 변경이 필요 없으므로 필터 없음
 
             # 2. User-Service 라우팅
